@@ -42,7 +42,7 @@ export function ensureOwnershipOrAdmin(req: Request, res: Response, next: NextFu
   }
 
   // Allow if user is accessing their own data
-  if (req.user && req.user.id === userId) {
+  if (req.user && (req.user as any).id === userId) {
     return next();
   }
 

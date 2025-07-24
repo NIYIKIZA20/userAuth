@@ -16,7 +16,7 @@ export const getCurrentUser = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    const user: User | null = await findById(req.user.id);
+    const user: User | null = await findById((req.user as any).id);
     if (!user) {
       errorResponse(res, 'User not found', 404);
       return;
@@ -93,12 +93,12 @@ export const updateUserProfile = async (req: Request, res: Response): Promise<vo
 
     // Check if email is already taken by another user
     const existingUser: User | null = await findByEmail(email);
-    if (existingUser && existingUser.id !== req.user.id) {
+    if (existingUser && existingUser.id !== (req.user as any).id) {
       errorResponse(res, 'Email already in use', 409);
       return;
     }
 
-    const updatedUser: User = await updateUser(req.user.id, { name, email });
+    const updatedUser: User = await updateUser((req.user as any).id, { name, email });
     successResponse(res, updatedUser, 'Profile updated successfully');
   } catch (error: any) {
     console.error('Error updating user profile:', error);
@@ -114,7 +114,7 @@ export const deleteUserAccount = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    await deleteUser(req.user.id);
+    await deleteUser((req.user as any).id);
     
     // Destroy session after account deletion
     req.session.destroy((err) => {
