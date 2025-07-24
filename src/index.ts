@@ -6,6 +6,7 @@ import session from 'express-session';
 import passport from './middlewares/passport';
 import router from './routers';
 import { globalErrorHandler, notFoundHandler } from './middlewares/errorHandler';
+import { setupSwagger } from './config/swagger';
 
 // Load environment variables
 dotenv.config();
@@ -36,6 +37,9 @@ app.use(session({
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Setup Swagger documentation
+setupSwagger(app);
 
 // API routes
 app.use('/api', router);

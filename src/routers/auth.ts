@@ -4,10 +4,51 @@ import { addToBlacklist } from '../utils/sessionBlacklist';
 
 const router = Router();
 
-// Redirect to Google for authentication
+/**
+ * @swagger
+ * /api/auth/google:
+ *   get:
+ *     summary: Start Google OAuth authentication
+ *     description: Redirects user to Google OAuth consent screen to begin authentication process
+ *     tags: [Authentication]
+ *     responses:
+ *       302:
+ *         description: Redirect to Google OAuth consent screen
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-// Google OAuth2 callback
+/**
+ * @swagger
+ * /api/auth/google/callback:
+ *   get:
+ *     summary: Google OAuth callback handler
+ *     description: Handles the callback from Google OAuth and processes user authentication
+ *     tags: [Authentication]
+ *     parameters:
+ *       - in: query
+ *         name: code
+ *         schema:
+ *           type: string
+ *         description: Authorization code from Google
+ *       - in: query
+ *         name: state
+ *         schema:
+ *           type: string
+ *         description: State parameter for security
+ *     responses:
+ *       302:
+ *         description: Successful authentication - redirect to dashboard
+ *       401:
+ *         description: Authentication failed - redirect to home
+ *       500:
+ *         description: Server error
+ */
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
@@ -16,7 +57,25 @@ router.get('/google/callback',
   }
 );
 
-// Logout route
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   get:
+ *     summary: Logout user
+ *     description: Logs out the current user, destroys session, and adds session to blacklist
+ *     tags: [Authentication]
+ *     security:
+ *       - sessionAuth: []
+ *     responses:
+ *       302:
+ *         description: Successfully logged out - redirect to home
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.get('/logout', (req, res) => {
   if (req.sessionID) {
     addToBlacklist(req.sessionID);
