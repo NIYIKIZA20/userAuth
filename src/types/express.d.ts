@@ -1,8 +1,13 @@
-import { User } from '../models/user';
-
 declare global {
   namespace Express {
-    interface User extends import('../models/user').User {}
+    interface User {
+      id: number;
+      name: string;
+      email: string;
+      picture: string;
+      googleId: string;
+      createdAt: Date;
+    }
   }
 }
 

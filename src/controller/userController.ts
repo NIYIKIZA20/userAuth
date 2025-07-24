@@ -9,7 +9,7 @@ export interface AuthenticatedRequest extends Request {
 }
 
 // Get current user profile
-export const getCurrentUser = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getCurrentUser = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
       errorResponse(res, 'User not authenticated', 401);
@@ -76,7 +76,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 };
 
 // Update user profile
-export const updateUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const updateUserProfile = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
       errorResponse(res, 'User not authenticated', 401);
@@ -107,7 +107,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
 };
 
 // Delete user account
-export const deleteUserAccount = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const deleteUserAccount = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
       errorResponse(res, 'User not authenticated', 401);

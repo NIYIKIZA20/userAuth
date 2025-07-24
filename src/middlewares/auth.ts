@@ -8,7 +8,7 @@ export interface AuthenticatedRequest extends Request {
 }
 
 // Middleware to ensure user is authenticated
-export function ensureAuthenticated(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
+export function ensureAuthenticated(req: Request, res: Response, next: NextFunction): void {
   if (req.isAuthenticated && req.isAuthenticated() && req.user) {
     return next();
   }
@@ -16,7 +16,7 @@ export function ensureAuthenticated(req: AuthenticatedRequest, res: Response, ne
 }
 
 // Middleware to ensure user is admin (optional for future use)
-export function ensureAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
+export function ensureAdmin(req: Request, res: Response, next: NextFunction): void {
   if (!req.isAuthenticated || !req.isAuthenticated() || !req.user) {
     errorResponse(res, 'Authentication required', 401);
     return;
@@ -28,7 +28,7 @@ export function ensureAdmin(req: AuthenticatedRequest, res: Response, next: Next
 }
 
 // Middleware to check if user owns the resource or is admin
-export function ensureOwnershipOrAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
+export function ensureOwnershipOrAdmin(req: Request, res: Response, next: NextFunction): void {
   if (!req.isAuthenticated || !req.isAuthenticated() || !req.user) {
     errorResponse(res, 'Authentication required', 401);
     return;
@@ -42,7 +42,7 @@ export function ensureOwnershipOrAdmin(req: AuthenticatedRequest, res: Response,
   }
 
   // Allow if user is accessing their own data
-  if (req.user.id === userId) {
+  if (req.user && req.user.id === userId) {
     return next();
   }
 
