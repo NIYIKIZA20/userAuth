@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import passport from 'passport';
+import passport from '../middlewares/passport'
 import { addToBlacklist } from '../utils/sessionBlacklist';
 
 const router = Router();

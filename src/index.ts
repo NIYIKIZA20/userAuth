@@ -77,3 +77,7 @@ app.listen(PORT, () => {
   console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
   console.log(`🔐 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
+
+
+// http://localhost:3000/api/auth/google    google auth
+  

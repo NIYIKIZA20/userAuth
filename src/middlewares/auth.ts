@@ -21,9 +21,6 @@ export function ensureAdmin(req: Request, res: Response, next: NextFunction): vo
     errorResponse(res, 'Authentication required', 401);
     return;
   }
-
-  // Add admin check logic here if you have admin roles
-  // For now, we'll just pass through
   next();
 }
 
